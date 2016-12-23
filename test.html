@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+</body>
+<h1>Drop Attachment Test</h1>
+<textarea class="conversation_box_input" rows="2"
+ondrop="conversationDrop(this,event)" placeholder="Drop an attachment">
+</textarea>
+<div id="progress" style="display: inline;"></div>
+<div id="result"></div>
+</body>
+<script>
+function BBMMediaService (){
+  var BlobHOST = 'http://localhost:5000';
+  this.saveBlob = function(formData, eventHandler, progress) {
+    // now post a new XHR request
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', BlobHOST);
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        eventHandler('File: ' + xhr.response);
+      } else {
+        eventHandler('Something went terribly wrong...');
+      }
+    };
+    xhr.upload.onprogress = function (event) {
+      if (event.lengthComputable) {
+        var complete = (event.loaded / event.total * 100 | 0);
+        progress(complete);
+      }
+    };
+    xhr.send(formData);
+	}
+}
+var bbmmediaservice = new BBMMediaService();
+function conversationDrop(that, thatevent) {
+  console.log(that)
+	console.log(thatevent)
+	thatevent.stopPropagation();
+	thatevent.preventDefault();
+	var files = thatevent.dataTransfer.files; // Array of all files
+  showMessage('Upload in Progress...');
+	for (var i = 0; i < files.length; i++) {
+		var formData = new FormData();
+	  formData.append('file', files[i]);
+		bbmmediaservice.saveBlob(formData, function (data) {
+      showMessage(data);
+		}, function (complete) {
+      document.getElementById('progress').innerHTML = complete + '%';
+      if(complete == 100){
+        showMessage('Upload Complete');
+      }
+		});
+	}
+}
+
+function showMessage(data) {
+	document.getElementById('result').innerHTML += data + '<br>';
+}
+
+function clearMessage() {
+	document.getElementById('result').innerHTML = '';
+}
+
+</script>
+</html>

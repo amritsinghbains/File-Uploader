@@ -9,8 +9,11 @@ var app = express()
 var port = process.env.PORT || 5000
 var bodyParser = require('body-parser');
 var app = express()
-app.use(bodyParser.json({limit: '50mb'}))
-app.use(bodyParser.urlencoded({ extended: false ,limit: '50mb'}))
+app.use(bodyParser.json({limit: '500mb'}))
+app.use(bodyParser.urlencoded({
+  extended: false ,
+  limit: '500mb'
+}))
 app.use(express.static(__dirname + "/"))
 
 app.all('*', function(req, res, next) {
