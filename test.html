@@ -22,6 +22,9 @@ function BBMMediaService (){
         eventHandler('Something went terribly wrong...');
       }
     };
+    xhr.onerror= function(e) {
+      eventHandler('Something went terribly wrong...');
+    };
     xhr.upload.onprogress = function (event) {
       if (event.lengthComputable) {
         var complete = (event.loaded / event.total * 100 | 0);
