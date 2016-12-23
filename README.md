@@ -3,9 +3,13 @@ Node JS File Uploader which uploads all kinds of files and returns a newly gener
 
 # How to use
 Step 1: npm install
+
 Install all node modules
+
 Step 2: node index.js
+
 Run node server locally
+
 Step 3: Open test.html and drag and drop any file
 
 # Features
